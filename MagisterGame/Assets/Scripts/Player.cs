@@ -30,25 +30,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        X = joystick.Horizontal * speed;
-        Y = joystick.Vertical * speed;
+        X = joystick.Horizontal * speed * Time.deltaTime;
+        Y = joystick.Vertical * speed * Time.deltaTime;
 
         if (view.IsMine)
-        {
-            //for PC
-            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+        {        
+            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal") + X, Input.GetAxisRaw("Vertical") + Y, 0);
             transform.position += input.normalized * speed * Time.deltaTime;
-            //for mobile device
-            rb.velocity = new Vector2(X, Y);
-
-            /*if (input == Vector3.zero)
-            {
-                anim.SetBool("isRunnig", false);
-            }
-            else
-            {
-                anim.SetBool("isRunnig", true);
-            }*/
         }
     }
 }
