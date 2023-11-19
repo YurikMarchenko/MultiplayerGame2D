@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: -90
+  bullet: {fileID: 6286036522578667962, guid: fbb253887903f044b84e5e0219a7bb51, type: 3}
+  shotPoint: {fileID: 7066373920021623055}
 --- !u!1 &2893585608645000294
 GameObject:
   m_ObjectHideFlags: 0
