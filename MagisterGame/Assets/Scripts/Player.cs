@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using System.Runtime.CompilerServices;
-using System.IO.IsolatedStorage;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPun, IPunObservable
 {
     private float X, Y;
     public float speed;
-    public int health;
-    
+    public int maxHealth;
+    private int currentHealth;
+
     Animator anim;
     PhotonView view;
+    public Image healthBar;
 
     public Text textName;
     public Joystick joystick;
@@ -29,14 +27,26 @@ public class Player : MonoBehaviour
         if (view.Owner.IsLocal)
         {
             Camera.main.GetComponent<CameraFollow>().player = gameObject.transform;
+            healthBar.gameObject.SetActive(true);
         }
+        else
+        {
+            healthBar.gameObject.SetActive(false);
+        }
+
+        currentHealth = maxHealth;
     }
 
     void Update()
     {
-        if (health <= 0)
+        if (view.IsMine)
         {
-            Destroy(gameObject);
+            healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
+
+        if (currentHealth <= 0 && view.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
         else
         {
@@ -50,13 +60,37 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     public void Flip()
     {
-
         textName.transform.Rotate(0f, 180f, 0f);
     }
+
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        if (photonView.IsMine)
+        {
+            photonView.RPC("UpdateHealth", RpcTarget.AllBuffered, damage);
+        }
+    }
+
+    [PunRPC]
+    void UpdateHealth(int damage)
+    {
+        currentHealth -= damage;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // Відправка даних про здоров'я через мережу
+            stream.SendNext(currentHealth);
+        }
+        else
+        {
+            // Отримання даних про здоров'я через мережу
+            currentHealth = (int)stream.ReceiveNext();
+        }
     }
 }

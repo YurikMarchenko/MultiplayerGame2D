@@ -40,6 +40,9 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - ShootBullet
+  - UpdateHealth
+  - UpdatePlayerState
+  - SyncHealthBar
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
