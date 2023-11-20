@@ -7,6 +7,8 @@ using UnityEngine;
 public class Gun : MonoBehaviourPun
 {
     public float offset;
+    public float startTimeBtwShots;
+    private float timeBtwShots;
 
     public GameObject bulletPrefab;
     public Transform shotPoint;
@@ -31,10 +33,19 @@ public class Gun : MonoBehaviourPun
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset);
 
-        if (Input.GetMouseButtonDown(0))
+        if(timeBtwShots <= 0)
         {
-            photonView.RPC("ShootBullet", RpcTarget.AllViaServer, shotPoint.position, transform.rotation);
+            if (Input.GetMouseButtonDown(0))
+            {
+                photonView.RPC("ShootBullet", RpcTarget.AllViaServer, shotPoint.position, transform.rotation);
+            }
         }
+        else
+        {
+            timeBtwShots -= Time.deltaTime;
+            timeBtwShots = startTimeBtwShots;
+        }
+        
     }
 
     [PunRPC]

@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     private float X, Y;
     public float speed;
+    public int health;
     
     Animator anim;
     PhotonView view;
@@ -30,13 +31,24 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        X = joystick.Horizontal * speed * Time.deltaTime;
-        Y = joystick.Vertical * speed * Time.deltaTime;
-
-        if (view.IsMine)
-        {        
-            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal") + X, Input.GetAxisRaw("Vertical") + Y, 0);
-            transform.position += input.normalized * speed * Time.deltaTime;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
         }
+        else
+        {
+            X = joystick.Horizontal * speed * Time.deltaTime;
+            Y = joystick.Vertical * speed * Time.deltaTime;
+
+            if (view.IsMine)
+            {
+                Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal") + X, Input.GetAxisRaw("Vertical") + Y, 0);
+                transform.position += input.normalized * speed * Time.deltaTime;
+            }
+        }
+    }
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
     }
 }

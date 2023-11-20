@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1034140087103202280}
   - component: {fileID: 1936057293528881297}
   - component: {fileID: 6860635314934368104}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: -90
-  bulletPrefab: {fileID: 0}
+  startTimeBtwShots: 0.3
+  bulletPrefab: {fileID: 6286036522578667962, guid: fbb253887903f044b84e5e0219a7bb51, type: 3}
   shotPoint: {fileID: 7066373920021623055}
 --- !u!114 &1936057293528881297
 MonoBehaviour:
@@ -151,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7066373920021623055}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -188,7 +189,7 @@ GameObject:
   - component: {fileID: -1182250797908187710}
   - component: {fileID: -3413690411087024977}
   - component: {fileID: -3377982975947063139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -299,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  health: 100
   joystick: {fileID: 6810734989377245140, guid: 9fdca35aa9192964a939bb0d9738d4fc, type: 3}
 --- !u!114 &-1182250797908187710
 MonoBehaviour:
