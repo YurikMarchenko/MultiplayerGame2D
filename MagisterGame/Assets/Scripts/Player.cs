@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System.Runtime.CompilerServices;
+using System.IO.IsolatedStorage;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     Animator anim;
     PhotonView view;
 
+    public Text textName;
     public Joystick joystick;
     private Rigidbody2D rb;
 
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
+        textName.text = view.Owner.NickName;
         if (view.Owner.IsLocal)
         {
             Camera.main.GetComponent<CameraFollow>().player = gameObject.transform;
@@ -46,6 +49,11 @@ public class Player : MonoBehaviour
                 transform.position += input.normalized * speed * Time.deltaTime;
             }
         }
+    }
+    public void Flip()
+    {
+
+        textName.transform.Rotate(0f, 180f, 0f);
     }
     public void TakeDamage(int damage)
     {
