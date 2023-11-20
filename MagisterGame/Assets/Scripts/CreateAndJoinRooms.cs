@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
@@ -16,6 +17,17 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         inputName.text = PlayerPrefs.GetString("name");
         PhotonNetwork.NickName = inputName.text;
+    }
+
+    public void QuickMatch()
+    {
+        PhotonNetwork.JoinRandomRoom();
+    }
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        RoomOptions roomOptions= new RoomOptions();
+        roomOptions.MaxPlayers = 4;
+        PhotonNetwork.CreateRoom(null, roomOptions, null);
     }
     public void CreateRoom()
     {
@@ -40,7 +52,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRoom(joinInput.text);
     }
-
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("Game");
