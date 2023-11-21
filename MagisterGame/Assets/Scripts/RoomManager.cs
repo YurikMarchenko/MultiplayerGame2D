@@ -19,7 +19,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
     }
     void Update()
-    {       
+    {
         if (!gameStarted)
         {
             CountPlayerInRoom();
@@ -28,7 +28,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
         else
         {
             CheckLivePlayerInRoom();
-            gameStartText.text = "Game started! Live players " + ConnectedPlayersInRoom;
+            if (ConnectedPlayersInRoom > 1)
+            {
+                gameStartText.text = "Game started! Live players " + ConnectedPlayersInRoom;
+            }
+            else
+            {
+                Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
+                gameStartText.text = "Winner - " + players[0].NickName;
+            }
         }
     }
     public void CountPlayerInRoom()
