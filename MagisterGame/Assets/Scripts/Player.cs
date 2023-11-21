@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.Windows;
 
 public class Player : MonoBehaviourPun, IPunObservable
 {
     private float X, Y;
     public float speed;
     public int maxHealth;
-    private int currentHealth;
+    private int currentHealth; 
+    private float posX;
 
     Animator anim;
     PhotonView view;
@@ -16,14 +18,17 @@ public class Player : MonoBehaviourPun, IPunObservable
     public Text textName;
     public Joystick joystick;
     private Rigidbody2D rb;
+    public RectTransform canvas; 
 
     void Start()
     {
+        posX = transform.position.x;
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
         joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
         textName.text = view.Owner.NickName;
+
         if (view.Owner.IsLocal)
         {
             Camera.main.GetComponent<CameraFollow>().player = gameObject.transform;
@@ -33,12 +38,11 @@ public class Player : MonoBehaviourPun, IPunObservable
         {
             healthBar.gameObject.SetActive(false);
         }
-
         currentHealth = maxHealth;
     }
 
     void Update()
-    {
+    {      
         if (view.IsMine)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
@@ -55,17 +59,43 @@ public class Player : MonoBehaviourPun, IPunObservable
 
             if (view.IsMine)
             {
-                Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal") + X, Input.GetAxisRaw("Vertical") + Y, 0);
+                Vector3 input = new Vector3(UnityEngine.Input.GetAxisRaw("Horizontal") + X, UnityEngine.Input.GetAxisRaw("Vertical") + Y, 0);
                 transform.position += input.normalized * speed * Time.deltaTime;
+                // Перевіряємо, в яку сторону рухається гравець
+                if (input.x > 0)
+                {
+                    // Гравець рухається вправо, спрайт повертаємо в початковий стан
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    
+                }
+                else if (input.x < 0)
+                {
+                    // Гравець рухається вліво, спрайт повертаємо в інший бік
+                    transform.rotation = Quaternion.Euler(0, 180, 0);
+                }              
+            }
+            else
+            {
+                var newposX = transform.position.x;
+                var delX = newposX - posX;
+                posX = newposX;
+
+                if (delX > 0)
+                {
+                    // Гравець рухається вправо, спрайт повертаємо в початковий стан
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+
+                }
+                else if (delX < 0)
+                {
+                    // Гравець рухається вліво, спрайт повертаємо в інший бік
+                    transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
             }
         }
+        canvas.rotation = Quaternion.Euler(0, 0, 0);
     }
-
-    public void Flip()
-    {
-        textName.transform.Rotate(0f, 180f, 0f);
-    }
-
+  
     public void TakeDamage(int damage)
     {
         if (photonView.IsMine)
