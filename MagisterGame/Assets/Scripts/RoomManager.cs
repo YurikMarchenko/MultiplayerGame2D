@@ -34,8 +34,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
-                gameStartText.text = "Winner - " + players[0].NickName;
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                string nameWinner = players[0].GetComponent<PhotonView>().Owner.NickName;
+                gameStartText.text = "Winner - " + nameWinner;
             }
         }
     }
