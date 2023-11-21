@@ -2,37 +2,56 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RoomManager : MonoBehaviour
+public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public int maxPlayersInRoom;
-
+    private int maxPlayersInRoom;
+    private int ConnectedPlayersInRoom;
+    public bool gameStarted = false;
+    public Text gameStartText;
+    
     void Start()
     {
         if (PhotonNetwork.InRoom)
         {
-            // Отримуємо максимальну кількість гравців в кімнаті
             maxPlayersInRoom = PhotonNetwork.CurrentRoom.MaxPlayers;
         }
     }
-
     void Update()
-    {
-        
+    {       
+        if (!gameStarted)
+        {
+            CountPlayerInRoom();
+            gameStartText.text = "Waiting all players..." + "(" + ConnectedPlayersInRoom + "/" + maxPlayersInRoom + ")";
+        }
+        else
+        {
+            CheckLivePlayerInRoom();
+            gameStartText.text = "Game started! Live players " + ConnectedPlayersInRoom;
+        }
     }
     public void CountPlayerInRoom()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ConnectedPlayersInRoom = players.Length;
 
-        if (players.Length == maxPlayersInRoom)
+        if (players.Length == maxPlayersInRoom && PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {              
-                PhotonNetwork.CurrentRoom.IsOpen = false;
-                
-                // Виводимо повідомлення у консоль
-                Debug.Log("Кімната закрита.");
-            }
+            photonView.RPC("StartGame", RpcTarget.AllBuffered);
         }
     }
+    public void CheckLivePlayerInRoom()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ConnectedPlayersInRoom = players.Length;
+    }
+
+    [PunRPC]
+    void StartGame()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        gameStarted = true;
+    }
+
 }
