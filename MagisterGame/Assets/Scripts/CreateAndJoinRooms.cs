@@ -14,6 +14,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public InputField maxCountPlayers;
     void Start()
     {
+        Application.targetFrameRate = 60;
         PhotonNetwork.ConnectUsingSettings();
         inputName.text = PlayerPrefs.GetString("name");
         PhotonNetwork.NickName = inputName.text;

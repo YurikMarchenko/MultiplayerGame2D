@@ -18,7 +18,9 @@ public class Player : MonoBehaviourPun, IPunObservable
     public Text textName;
     public Joystick joystick;
     private Rigidbody2D rb;
-    public RectTransform canvas; 
+    public RectTransform canvas;
+    public AudioSource getHitSound;
+
 
     void Start()
     {
@@ -26,6 +28,9 @@ public class Player : MonoBehaviourPun, IPunObservable
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
         joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+
+        //звуки
+        getHitSound = GetComponent<AudioSource>();
 
         textName.text = view.Owner.NickName;
 
@@ -100,6 +105,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
+            getHitSound.Play();
             photonView.RPC("UpdateHealth", RpcTarget.AllBuffered, damage);
         }
     }

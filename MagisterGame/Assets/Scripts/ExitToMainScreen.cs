@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class LeaveRoomScript : MonoBehaviour
 {
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+    }
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();

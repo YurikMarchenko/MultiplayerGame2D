@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Pun.Demo.Asteroids;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Gun : MonoBehaviourPun
@@ -12,6 +13,7 @@ public class Gun : MonoBehaviourPun
 
     public GameObject bulletPrefab;
     public Transform shotPoint;
+    public AudioSource audioSource;
 
     void Update()
     {
@@ -86,6 +88,11 @@ public class Gun : MonoBehaviourPun
     {
         GameObject bullet = Instantiate(bulletPrefab, position, rotation);
         PhotonView bulletPhotonView = bullet.GetComponent<PhotonView>();
+
+        if (photonView.IsMine)
+        {
+            audioSource.Play();
+        }
 
         if (bulletPhotonView != null)
         {
