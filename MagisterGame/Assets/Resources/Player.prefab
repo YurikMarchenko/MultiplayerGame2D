@@ -102,10 +102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: -90
-  startTimeBtwShots: 0.7
+  startTimeBtwShots: 1
   bulletPrefab: {fileID: 6286036522578667962, guid: fbb253887903f044b84e5e0219a7bb51, type: 3}
   shotPoint: {fileID: 7066373920021623055}
   audioSource: {fileID: 4148477132078697902}
+  shootButton: {fileID: 0}
+  joystick: {fileID: 0}
 --- !u!114 &1936057293528881297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +407,7 @@ MonoBehaviour:
   maxHealth: 100
   healthBar: {fileID: 9073616225103180802}
   textName: {fileID: 2470847249813844241}
-  joystick: {fileID: 6810734989377245140, guid: 9fdca35aa9192964a939bb0d9738d4fc, type: 3}
+  joystick: {fileID: 0}
   canvas: {fileID: 4268796968941784352}
   getHitSound: {fileID: 2078542890803015129}
 --- !u!114 &-1182250797908187710
