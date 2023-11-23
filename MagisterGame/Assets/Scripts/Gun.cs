@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class Gun : MonoBehaviourPun
 {
     public float offset;
-    private float X, Y;
     public float startTimeBtwShots;
     private float timeBtwShots;
     private bool shooting = false;
@@ -13,27 +12,11 @@ public class Gun : MonoBehaviourPun
     public GameObject bulletPrefab;
     public Transform shotPoint;
     public AudioSource audioSource;
-    public Button shootButton;
-    public Joystick joystick;
 
     private Vector3 lastAimDirection;
-    private void Start()
-    {
-        shootButton = GameObject.FindGameObjectWithTag("ShootButton").GetComponent<Button>();
-        shootButton.onClick.AddListener(isShooting);
-        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
-    }
 
-    void isShooting()
+    private void Update()
     {
-        shooting = true;
-    }
-
-    void Update()
-    {
-        X = joystick.Horizontal * Time.deltaTime;
-        Y = joystick.Vertical * Time.deltaTime;
-
         if (photonView.IsMine)
         {
             HandleShooting();
@@ -54,7 +37,6 @@ public class Gun : MonoBehaviourPun
         }
 
         Vector3 shootDirection = Vector3.zero;
-
 
         if ((Input.GetKeyDown(KeyCode.Space) || shooting) && timeBtwShots <= 0 && PhotonNetwork.InRoom)
         {

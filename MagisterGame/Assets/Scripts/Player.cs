@@ -1,14 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using UnityEngine.Windows;
 
 public class Player : MonoBehaviourPun, IPunObservable
 {
     private float X, Y;
     public float speed;
     public int maxHealth;
-    private int currentHealth; 
+    private int currentHealth;
     private float posX;
 
     Animator anim;
@@ -16,21 +15,18 @@ public class Player : MonoBehaviourPun, IPunObservable
     public Image healthBar;
 
     public Text textName;
-    public Joystick joystick;
     private Rigidbody2D rb;
     public RectTransform canvas;
     public AudioSource getHitSound;
     public AudioSource getHealSound;
-
 
     void Start()
     {
         posX = transform.position.x;
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
-        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
-        //звуки
+        // Звуки
         getHitSound = GetComponent<AudioSource>();
         getHealSound = GetComponent<AudioSource>();
 
@@ -49,7 +45,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     }
 
     void Update()
-    {      
+    {
         if (view.IsMine)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
@@ -61,25 +57,25 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            X = joystick.Horizontal * speed * Time.deltaTime;
-            Y = joystick.Vertical * speed * Time.deltaTime;
+            X = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
+            Y = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
 
             if (view.IsMine)
             {
-                Vector3 input = new Vector3(UnityEngine.Input.GetAxisRaw("Horizontal") + X, UnityEngine.Input.GetAxisRaw("Vertical") + Y, 0);
+                Vector3 input = new Vector3(X, Y, 0);
                 transform.position += input.normalized * speed * Time.deltaTime;
+
                 // Перевіряємо, в яку сторону рухається гравець
                 if (input.x > 0)
                 {
                     // Гравець рухається вправо, спрайт повертаємо в початковий стан
                     transform.rotation = Quaternion.Euler(0, 0, 0);
-                    
                 }
                 else if (input.x < 0)
                 {
                     // Гравець рухається вліво, спрайт повертаємо в інший бік
                     transform.rotation = Quaternion.Euler(0, 180, 0);
-                }              
+                }
             }
             else
             {
@@ -91,7 +87,6 @@ public class Player : MonoBehaviourPun, IPunObservable
                 {
                     // Гравець рухається вправо, спрайт повертаємо в початковий стан
                     transform.rotation = Quaternion.Euler(0, 0, 0);
-
                 }
                 else if (delX < 0)
                 {
@@ -102,7 +97,7 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
         canvas.rotation = Quaternion.Euler(0, 0, 0);
     }
-  
+
     public void TakeDamage(int damage)
     {
         if (photonView.IsMine)
@@ -133,7 +128,7 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (currentHealth <= 75)
         {
             currentHealth += healCount;
-        }   
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
