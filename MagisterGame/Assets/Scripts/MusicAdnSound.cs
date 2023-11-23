@@ -13,8 +13,18 @@ public class AudioManager : MonoBehaviour
     public AudioClip clip;
     public AudioSource audioSource;
 
-    public void Start()
+    private void Start()
     {
+        LoadAudioState(); // ƒобавлено дл€ загрузки состо€ни€ звука при запуске
+    }
+
+    private void LoadAudioState()
+    {
+        // «агружаем значение звука из PlayerPrefs, если оно существует
+        float savedVolume = PlayerPrefs.GetFloat("AudioVolume", 1f);
+        AudioListener.volume = savedVolume;
+
+        // ”станавливаем соответствующий спрайт кнопки в зависимости от значени€ звука
         if (AudioListener.volume == 1)
         {
             buttonAudio.GetComponent<Image>().sprite = audioOn;
@@ -24,6 +34,14 @@ public class AudioManager : MonoBehaviour
             buttonAudio.GetComponent<Image>().sprite = audioOff;
         }
     }
+
+    private void SaveAudioState()
+    {
+        // —охран€ем текущее значение звука в PlayerPrefs
+        PlayerPrefs.SetFloat("AudioVolume", AudioListener.volume);
+        PlayerPrefs.Save(); // —охран€ем изменени€
+    }
+
     public void OnOffAudio()
     {
         if (AudioListener.volume == 1)
@@ -36,7 +54,10 @@ public class AudioManager : MonoBehaviour
             AudioListener.volume = 1;
             buttonAudio.GetComponent<Image>().sprite = audioOn;
         }
+
+        SaveAudioState(); // —охран€ем состо€ние звука после его изменени€
     }
+
     public void PlaySound()
     {
         audioSource.PlayOneShot(clip);
