@@ -8,7 +8,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     private float X, Y;
     public float speed;
     public int maxHealth;
-    private int currentHealth; 
+    public int currentHealth; 
     private float posX;
 
     Animator anim;
@@ -20,8 +20,6 @@ public class Player : MonoBehaviourPun, IPunObservable
     private Rigidbody2D rb;
     public RectTransform canvas;
     public AudioSource getHitSound;
-    public AudioSource getHealSound;
-
 
     void Start()
     {
@@ -32,7 +30,6 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         //звуки
         getHitSound = GetComponent<AudioSource>();
-        getHealSound = GetComponent<AudioSource>();
 
         textName.text = view.Owner.NickName;
 
@@ -116,7 +113,6 @@ public class Player : MonoBehaviourPun, IPunObservable
     {
         if (photonView.IsMine)
         {
-            getHealSound.Play();
             photonView.RPC("UpdateHealthAfterHeal", RpcTarget.AllBuffered, healCount);
         }
     }
