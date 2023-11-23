@@ -20,6 +20,7 @@ public class Player : MonoBehaviourPun, IPunObservable
     private Rigidbody2D rb;
     public RectTransform canvas;
     public AudioSource getHitSound;
+    public AudioSource getHealSound;
 
 
     void Start()
@@ -31,6 +32,7 @@ public class Player : MonoBehaviourPun, IPunObservable
 
         //звуки
         getHitSound = GetComponent<AudioSource>();
+        getHealSound = GetComponent<AudioSource>();
 
         textName.text = view.Owner.NickName;
 
@@ -106,14 +108,32 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine)
         {
             getHitSound.Play();
-            photonView.RPC("UpdateHealth", RpcTarget.AllBuffered, damage);
+            photonView.RPC("UpdateHealthAfterDamage", RpcTarget.AllBuffered, damage);
+        }
+    }
+
+    public void GiveHeal(int healCount)
+    {
+        if (photonView.IsMine)
+        {
+            getHealSound.Play();
+            photonView.RPC("UpdateHealthAfterHeal", RpcTarget.AllBuffered, healCount);
         }
     }
 
     [PunRPC]
-    void UpdateHealth(int damage)
+    void UpdateHealthAfterDamage(int damage)
     {
         currentHealth -= damage;
+    }
+
+    [PunRPC]
+    void UpdateHealthAfterHeal(int healCount)
+    {
+        if (currentHealth <= 75)
+        {
+            currentHealth += healCount;
+        }   
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
             {
                 hitInfo.collider.GetComponent<Player>().TakeDamage(damage);
             }
-            if (hitInfo.collider.CompareTag("background"))
+            if (hitInfo.collider.CompareTag("background") || hitInfo.collider.CompareTag("Heal"))
             {
                 Destroy(gameObject);
             }
