@@ -19,16 +19,27 @@ public class Player : MonoBehaviourPun, IPunObservable
     public RectTransform canvas;
     public AudioSource getHitSound;
 
+    private Canvas gameCanvas;
+    private Canvas deathCanvas;
+
     void Start()
     {
         posX = transform.position.x;
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
 
+        gameCanvas = GameObject.FindGameObjectWithTag("gameCanvas").GetComponent<Canvas>();
+        deathCanvas = GameObject.FindGameObjectWithTag("deathCanvas").GetComponent<Canvas>();
+
         // Звуки
         getHitSound = GetComponent<AudioSource>();
 
         textName.text = view.Owner.NickName;
+        
+        if (view.IsMine)
+        {
+            deathCanvas.gameObject.SetActive(false);
+        }
 
         if (view.Owner.IsLocal)
         {
@@ -52,6 +63,8 @@ public class Player : MonoBehaviourPun, IPunObservable
         if (currentHealth <= 0 && view.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);
+            gameCanvas.gameObject.SetActive(false);
+            deathCanvas.gameObject.SetActive(true);
         }
         else
         {

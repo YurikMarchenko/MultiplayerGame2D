@@ -9,6 +9,8 @@ TagManager:
   - background
   - ShootButton
   - Heal
+  - deathCanvas
+  - gameCanvas
   layers:
   - Default
   - TransparentFX
