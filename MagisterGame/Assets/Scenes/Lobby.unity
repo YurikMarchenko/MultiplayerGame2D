@@ -1216,11 +1216,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9930d5b4be15bb04c9d0a6fa0d7e6b2e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ac94a225182ff4fb6abb60c4dd83bff5, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2566,7 +2566,7 @@ MonoBehaviour:
   audioOn: {fileID: 21300000, guid: 5f3d2cee3556155488bdaa37bca36482, type: 3}
   audioOff: {fileID: 21300000, guid: b53ae569fbcbf74488e0753b9eb20324, type: 3}
   buttonAudio: {fileID: 1934610459}
-  clip: {fileID: 8300000, guid: 9930d5b4be15bb04c9d0a6fa0d7e6b2e, type: 3}
+  clip: {fileID: 8300000, guid: ac94a225182ff4fb6abb60c4dd83bff5, type: 3}
   audioSource: {fileID: 1007736405}
 --- !u!1 &2110716698
 GameObject:
