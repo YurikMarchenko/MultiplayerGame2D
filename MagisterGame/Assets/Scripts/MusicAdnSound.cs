@@ -9,22 +9,23 @@ public class AudioManager : MonoBehaviour
     public Sprite audioOn;
     public Sprite audioOff;
     public GameObject buttonAudio;
+    public GameObject exitButton;
 
     public AudioClip clip;
     public AudioSource audioSource;
 
     private void Start()
     {
-        LoadAudioState(); // ƒобавлено дл€ загрузки состо€ни€ звука при запуске
+        LoadAudioState();
     }
 
     private void LoadAudioState()
     {
-        // «агружаем значение звука из PlayerPrefs, если оно существует
+
         float savedVolume = PlayerPrefs.GetFloat("AudioVolume", 1f);
         AudioListener.volume = savedVolume;
 
-        // ”станавливаем соответствующий спрайт кнопки в зависимости от значени€ звука
+
         if (AudioListener.volume == 1)
         {
             buttonAudio.GetComponent<Image>().sprite = audioOn;
@@ -37,9 +38,9 @@ public class AudioManager : MonoBehaviour
 
     private void SaveAudioState()
     {
-        // —охран€ем текущее значение звука в PlayerPrefs
+
         PlayerPrefs.SetFloat("AudioVolume", AudioListener.volume);
-        PlayerPrefs.Save(); // —охран€ем изменени€
+        PlayerPrefs.Save();
     }
 
     public void OnOffAudio()
@@ -55,11 +56,15 @@ public class AudioManager : MonoBehaviour
             buttonAudio.GetComponent<Image>().sprite = audioOn;
         }
 
-        SaveAudioState(); // —охран€ем состо€ние звука после его изменени€
+        SaveAudioState();
     }
 
     public void PlaySound()
     {
         audioSource.Play();
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
